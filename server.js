@@ -4,16 +4,21 @@ const colors = require('colors')
 const dotenv = require('dotenv')
 const express = require('express')
 
-const connectDB = require(join(__dirname, 'config', 'db'))
-
 dotenv.config({
     path: join(__dirname, 'config', 'config.env')
 })
 
-connectDB()
-
 const app = express()
 app.use(express.json())
+
+// MONGO DB
+const connectDB = require(join(__dirname, 'config', 'db'))
+connectDB()
+
+// Routes
+const auth = require(join(__dirname, 'routes', 'auth', 'auth'))
+app.use('/api/v1/auth/', auth)
+
 
 const PORT = process.env.PORT
 const MODE = process.env.NODE_ENV
