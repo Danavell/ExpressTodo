@@ -2,6 +2,7 @@ const { join } = require('path')
 
 const asyncHandler = require(join(__dirname, '..', 'middleware', 'async'))
 const ErrorResponse = require(join(__dirname, '..', 'utils', 'ErrorResponse'))
+const sendTokenResponse = require(join(__dirname, '..', 'utils', 'sendTokenResponse'))
 const User = require(join(__dirname, '..', 'models', 'User'))
 
 // @desc        Register User
@@ -17,12 +18,7 @@ module.exports.register = asyncHandler(async (req, res, next) => {
         password
     })
 
-    const token = user.getSignedJwtToken()
-
-    res.status(200).json({
-        success: true,
-        token
-    })
+    sendTokenResponse(user, 200, res)
 })
 
 
@@ -44,14 +40,11 @@ module.exports.login = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse('Invalid Credentials', 401))
     }
 
-    if (!user.matchPassword(password)) {
+    const isMatch = user.matchPassword(password)
+
+    if (!isMatch) {
         return next(new ErrorResponse('Invalid Credentials', 401))
     }
 
-    const token = user.getSignedJwtToken()
-
-    res.status(200).json({
-        success: true,
-        token
-    })
+    sendTokenResponse(user, 200, res)
 })
