@@ -25,7 +25,7 @@ exports.createTodo = asyncHandler(async (req, res, next) => {
 exports.getAllTodos = asyncHandler(async (req, res, next) => {
     let query = Todo
         .find({ userId: { $eq: req.user._id.toString() } })
-        .select({ "_id": 1, "note": 1, "createdAt": 1 })
+        .select({ "_id": 1, "note": 1, "createdAt": 1, "completed": 1 })
 
     const today = moment().startOf('day')
     const yesterday = moment(today).add(-1, 'days').startOf('day')
@@ -75,10 +75,22 @@ exports.deleteTodo = asyncHandler(async (req, res, next) => {
 exports.updateTodo = asyncHandler(async (req, res, next) => {
     const { note } = req.body
 
-    const payload = {
-        note,
-        createdAt: new Date()
-    }
+    const data = await Todo.findByIdAndUpdate(req.params.id, { note }, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200).json({
+        success: true,
+        data
+    })
+})
+
+
+exports.markCompletion = asyncHandler(async (req, res, next) => {
+    const todo = await Todo.findById(req.params.id).select({ "completed": 1 })
+
+    const payload = { completed: !todo.completed }
 
     const data = await Todo.findByIdAndUpdate(req.params.id, payload, {
         new: true,
@@ -90,4 +102,3 @@ exports.updateTodo = asyncHandler(async (req, res, next) => {
         data
     })
 })
-

@@ -7,6 +7,7 @@ const {
     createTodo,
     deleteTodo,
     getAllTodos,
+    markCompletion,
     updateTodo
 } = require(join(__dirname, '..', 'controllers', 'todo'))
 
@@ -21,5 +22,9 @@ router
     .route('/:id')
     .delete(protect, deleteTodo)
     .put(protect, updateTodo)
+
+router
+    .route('/completed/:id')
+    .put(protect, markCompletion)
 
 module.exports = router
