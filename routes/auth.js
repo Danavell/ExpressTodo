@@ -4,7 +4,7 @@ const express = require('express')
 const {
     login,
     register
-} = require(join(__dirname, '..', '..', 'controllers', 'auth'))
+} = require(join(__dirname, '..', 'controllers', 'auth'))
 
 router = express.Router()
 

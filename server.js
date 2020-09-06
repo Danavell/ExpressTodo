@@ -21,8 +21,11 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json())
 
 // Routes
-const auth = require(join(__dirname, 'routes', 'auth', 'auth'))
-app.use('/api/v1/auth/', auth)
+const auth = require(join(__dirname, 'routes', 'auth'))
+const todo = require(join(__dirname, 'routes', 'todo'))
+
+app.use('/api/v1/auth', auth)
+app.use('/api/v1/todo', todo)
 
 // Error Handling 
 const errorHandler = require(join(__dirname, 'middleware', 'error'))
