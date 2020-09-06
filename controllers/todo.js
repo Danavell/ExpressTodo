@@ -23,8 +23,6 @@ exports.createTodo = asyncHandler(async (req, res, next) => {
 
 
 exports.getAllTodos = asyncHandler(async (req, res, next) => {
-    console.log(req.user._id.toString())
-
     let query = Todo
         .find({ userId: { $eq: req.user._id.toString() } })
         .select({ "_id": 1, "note": 1, "createdAt": 1 })
@@ -36,7 +34,7 @@ exports.getAllTodos = asyncHandler(async (req, res, next) => {
     const yesterdayTodos = await query.find({
         createdAt: {
             $gte: yesterday.toDate(),
-            $lte: today.toDate()
+            $lte: moment(yesterday).endOf('day').toDate()
         }
     })
 
