@@ -6,15 +6,20 @@ const protect = require(join(__dirname, '..', 'middleware', 'auth'))
 const {
     createTodo,
     deleteTodo,
-    getAllTodos
+    getAllTodos,
+    updateTodo
 } = require(join(__dirname, '..', 'controllers', 'todo'))
 
 router = express.Router()
 
 router
     .route('/')
-    .delete(protect, deleteTodo)
     .get(protect, getAllTodos)
     .post(protect, createTodo)
+
+router
+    .route('/:id')
+    .delete(protect, deleteTodo)
+    .put(protect, updateTodo)
 
 module.exports = router
