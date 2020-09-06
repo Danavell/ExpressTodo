@@ -61,14 +61,15 @@ exports.getAllTodos = asyncHandler(async (req, res, next) => {
 })
 
 
-// module.exports.deleteTodo = asyncHandler(async (req, res) => {
-//     await Todo.findByIdAndRemove(req.params.id)
+exports.deleteTodo = asyncHandler(async (req, res, next) => {
+    const id = req.body.todo_id
+    await Todo.findByIdAndRemove(id)
 
-//     res.status(200).json({
-//         success: true,
-//         data: {}
-//     })
-// })
+    res.status(200).json({
+        success: true,
+        data: {}
+    })
+})
 
 
 // module.exports.updateTodo = asyncHandler(async (req, res) => {

@@ -5,17 +5,16 @@ const protect = require(join(__dirname, '..', 'middleware', 'auth'))
 
 const {
     createTodo,
+    deleteTodo,
     getAllTodos
 } = require(join(__dirname, '..', 'controllers', 'todo'))
-
-// console.log(protect)
-// console.log(createTodo)
 
 router = express.Router()
 
 router
     .route('/')
-    .post(protect, createTodo)
+    .delete(protect, deleteTodo)
     .get(protect, getAllTodos)
+    .post(protect, createTodo)
 
 module.exports = router
